@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aku Cinta Bangun Datar</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Fredoka', sans-serif; }
+    html, body, #app { height: 100%; }
+    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+    @keyframes correctPop { 0% { transform: scale(0.8); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+    .anim-slide { animation: slideUp 0.5s ease-out; }
+    .anim-shake { animation: shake 0.4s ease; }
+    .anim-pop { animation: correctPop 0.5s ease-out; }
+    .btn-hover { transition: all 0.3s; }
+    .btn-hover:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .shape-demo { display: flex; align-items: center; justify-content: center; margin: 15px 0; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto relative flex flex-col" style="background-image: url('https://i.imgur.com/uFiLt0E.png'); background-size: cover; background-attachment: fixed;">
+   <div class="absolute inset-0 bg-gradient-to-br from-[#FFF5E6]/80 via-[#FFE5CC]/80 to-[#FFD4B3]/80"></div>
+   <main class="relative z-10 flex-1 flex flex-col items-center px-4 py-6 overflow-auto">
+    <div id="header" class="text-center mb-6 w-full max-w-4xl anim-slide flex items-center justify-between">
+     <div class="flex-1"></div>
+     <div class="flex-1 text-center">
+      <h1 id="app-title" class="text-4xl md:text-5xl font-bold text-orange-600 mb-2">🟊 Aku Cinta Bangun Datar</h1>
+      <p class="text-orange-500 text-base md:text-lg">Belajar bangun datar dengan cara seru dan menyenangkan!</p>
+     </div>
+     <div class="flex-1 text-right"><button id="audio-toggle" onclick="toggleAudio()" class="btn-hover bg-gradient-to-r from-yellow-300 to-yellow-400 text-gray-800 font-bold py-3 px-4 rounded-full text-xl shadow-lg hover:shadow-xl inline-block" title="Nyalakan/Matikan Suara">🔊</button>
+     </div>
+    </div>
+    <audio id="bg-music" loop><source src="https://cdn.jsdelivr.net/gh/abdulmajidetos18-glitch/Majidddd@main/The_Happy_Math_Parade.mp3" type="audio/mpeg">
+    </audio><!-- LOGIN SCREEN -->
+    <div id="screen-login" class="w-full max-w-2xl anim-slide">
+     <div class="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-lg border-4 border-orange-300 text-center">
+      <h2 class="text-3xl font-bold text-orange-600 mb-6">👋 Selamat Datang!</h2>
+      <p class="text-gray-700 text-lg mb-6">Siapa nama mu? Ayo mulai belajar bangun datar! 📚</p><input id="student-name" type="text" placeholder="Masukkan nama mu..." class="w-full px-6 py-4 rounded-2xl border-3 border-orange-400 text-lg font-semibold focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-300 mb-6" maxlength="30"> <button onclick="startGame()" class="btn-hover w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold py-4 px-6 rounded-2xl text-xl shadow-lg hover:shadow-xl">Mulai Belajar 🚀</button>
+     </div>
+    </div><!-- MENU SCREEN -->
+    <div id="screen-menu" class="hidden w-full max-w-2xl">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"><button onclick="goToMenu('materi')" class="btn-hover bg-gradient-to-br from-pink-400 to-pink-500 text-white font-bold py-6 px-6 rounded-3xl text-lg shadow-lg hover:shadow-xl">📚 Pelajari Materi</button> <button onclick="goToMenu('kuis')" class="btn-hover bg-gradient-to-br from-blue-400 to-blue-500 text-white font-bold py-6 px-6 rounded-3xl text-lg shadow-lg hover:shadow-xl">🎮 Kuis Interaktif</button> <button onclick="goToMenu('postest')" class="btn-hover bg-gradient-to-br from-purple-400 to-purple-500 text-white font-bold py-6 px-6 rounded-3xl text-lg shadow-lg hover:shadow-xl">⭐ Postest</button>
+     </div>
+    </div><!-- MATERI SCREEN -->
+    <div id="screen-materi" class="hidden w-full max-w-3xl anim-slide"><button onclick="goToMenu('menu')" class="btn-hover bg-gray-300 text-gray-700 font-semibold px-4 py-2 rounded-xl mb-4 text-sm">← Kembali</button>
+     <div class="space-y-6">
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-lg border-4 border-blue-300">
+       <h2 class="text-2xl font-bold text-blue-600 mb-3">📦 Persegi Panjang</h2>
+       <div class="shape-demo">
+        <svg width="120" height="80" viewbox="0 0 120 80">
+         <rect x="10" y="10" width="100" height="60" fill="#87CEEB" stroke="#0066FF" stroke-width="3" /><text x="60" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#0066FF">
+          Panjang
+         </text>
+        </svg>
+       </div>
+       <p class="text-gray-700 text-base leading-relaxed mb-3"><strong>Ciri-ciri:</strong> Memiliki 4 sisi, 2 sisi panjang dan 2 sisi lebar yang sama, 4 sudut siku-siku (90°)</p>
+       <p class="text-gray-700 text-base leading-relaxed"><strong>Contoh:</strong> Pintu rumah 🚪, meja 🪑, layar hp 📱, kertas A4 📄</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-lg border-4 border-yellow-300">
+       <h2 class="text-2xl font-bold text-yellow-600 mb-3">⬜ Persegi</h2>
+       <div class="shape-demo">
+        <svg width="100" height="100" viewbox="0 0 100 100">
+         <rect x="10" y="10" width="80" height="80" fill="#FFD700" stroke="#FF9500" stroke-width="3" /><text x="50" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#FF9500">
+          Persegi
+         </text>
+        </svg>
+       </div>
+       <p class="text-gray-700 text-base leading-relaxed mb-3"><strong>Ciri-ciri:</strong> Memiliki 4 sisi yang sama panjang, 4 sudut siku-siku (90°)</p>
+       <p class="text-gray-700 text-base leading-relaxed"><strong>Contoh:</strong> Papan catur ♟️, ubin lantai 🏠, kotak mainan 🎁</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-lg border-4 border-red-300">
+       <h2 class="text-2xl font-bold text-red-600 mb-3">🔺 Segitiga</h2>
+       <div class="shape-demo">
+        <svg width="100" height="100" viewbox="0 0 100 100">
+         <polygon points="50,10 90,80 10,80" fill="#FF6B6B" stroke="#CC0000" stroke-width="3" />
+        </svg>
+       </div>
+       <p class="text-gray-700 text-base leading-relaxed mb-3"><strong>Ciri-ciri:</strong> Memiliki 3 sisi, 3 sudut, jumlah sudut = 180°</p>
+       <p class="text-gray-700 text-base leading-relaxed"><strong>Contoh:</strong> Atap rumah 🏠, pizza 🍕, rambu lalu lintas ⚠️</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-lg border-4 border-green-300">
+       <h2 class="text-2xl font-bold text-green-600 mb-3">⭕ Lingkaran</h2>
+       <div class="shape-demo">
+        <svg width="100" height="100" viewbox="0 0 100 100">
+         <circle cx="50" cy="50" r="40" fill="#90EE90" stroke="#00AA00" stroke-width="3" />
+        </svg>
+       </div>
+       <p class="text-gray-700 text-base leading-relaxed mb-3"><strong>Ciri-ciri:</strong> Tidak memiliki sisi lurus, semua titik berjarak sama dari pusat, tidak ada sudut</p>
+       <p class="text-gray-700 text-base leading-relaxed"><strong>Contoh:</strong> Roda 🚗, piring 🍽️, bola ⚽, jam 🕐</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-lg border-4 border-purple-300">
+       <h2 class="text-2xl font-bold text-purple-600 mb-3">📐 Trapesium</h2>
+       <div class="shape-demo">
+        <svg width="120" height="80" viewbox="0 0 120 80">
+         <polygon points="20,60 40,20 80,20 100,60" fill="#DA70D6" stroke="#9932CC" stroke-width="3" />
+        </svg>
+       </div>
+       <p class="text-gray-700 text-base leading-relaxed mb-3"><strong>Ciri-ciri:</strong> Memiliki 4 sisi, 2 sisi sejajar (atas-bawah), 2 sisi tidak sejajar</p>
+       <p class="text-gray-700 text-base leading-relaxed"><strong>Contoh:</strong> Tas 👜, kursi 🪑, layar proyektor 🎬</p>
+      </div>
+     </div>
+    </div><!-- KUIS SCREEN -->
+    <div id="screen-kuis" class="hidden w-full max-w-2xl anim-slide"><button onclick="goToMenu('menu')" class="btn-hover bg-gray-300 text-gray-700 font-semibold px-4 py-2 rounded-xl mb-4 text-sm">← Kembali</button>
+     <div id="kuis-container" class="space-y-4">
+      <div class="flex justify-between items-center bg-blue-100 rounded-2xl p-4 mb-4"><span id="kuis-number" class="text-blue-600 font-bold text-lg"></span>
+       <div id="kuis-stars" class="flex gap-1"></div>
+      </div>
+      <div id="kuis-question-box" class="bg-white rounded-3xl p-6 shadow-lg border-4 border-blue-300 mb-4">
+       <p id="kuis-question" class="text-xl font-bold text-gray-800 mb-6"></p>
+       <div id="kuis-image" class="mb-4 flex justify-center text-6xl"></div>
+      </div>
+      <div id="kuis-options" class="space-y-3"></div>
+      <div id="kuis-feedback" class="hidden rounded-2xl p-4 font-bold text-center text-lg"></div>
+      <div id="kuis-next" class="hidden text-center mt-6">
+       <button onclick="nextKuis()" class="btn-hover bg-blue-500 hover:bg-blue-600 text-white font-bold px-8 py-3 rounded-xl text-lg">Lanjut →</button>
+      </div>
+     </div>
+    </div><!-- POSTEST SCREEN -->
+    <div id="screen-postest" class="hidden w-full max-w-2xl anim-slide"><button onclick="goToMenu('menu')" class="btn-hover bg-gray-300 text-gray-700 font-semibold px-4 py-2 rounded-xl mb-4 text-sm">← Kembali</button>
+     <div id="postest-container" class="space-y-4">
+      <div class="flex justify-between items-center bg-purple-100 rounded-2xl p-4 mb-4"><span id="postest-number" class="text-purple-600 font-bold text-lg"></span>
+       <div id="postest-stars" class="flex gap-1"></div>
+      </div>
+      <div id="postest-question-box" class="bg-white rounded-3xl p-6 shadow-lg border-4 border-purple-300 mb-4">
+       <p id="postest-question" class="text-xl font-bold text-gray-800 mb-6"></p>
+       <div id="postest-image" class="mb-4 flex justify-center text-6xl"></div>
+      </div>
+      <div id="postest-options" class="space-y-3"></div>
+      <div id="postest-feedback" class="hidden rounded-2xl p-4 font-bold text-center text-lg"></div>
+      <div id="postest-next" class="hidden text-center mt-6">
+       <button onclick="nextPostest()" class="btn-hover bg-purple-500 hover:bg-purple-600 text-white font-bold px-8 py-3 rounded-xl text-lg">Lanjut →</button>
+      </div>
+     </div>
+    </div><!-- RESULT SCREEN -->
+    <div id="screen-result" class="hidden w-full max-w-2xl text-center anim-slide">
+     <div id="result-emoji" class="text-8xl mb-4"></div>
+     <h2 class="text-3xl font-bold text-gray-800 mb-2">Selesai! 🎉</h2>
+     <p id="result-score" class="text-2xl font-bold text-orange-600 mb-4"></p>
+     <div id="result-stars" class="flex justify-center gap-2 mb-6"></div>
+     <p id="result-msg" class="text-lg text-gray-700 mb-6 leading-relaxed"></p><button onclick="goToMenu('menu')" class="btn-hover bg-gradient-to-r from-orange-400 to-pink-400 text-white font-bold px-8 py-3 rounded-xl text-lg">Kembali ke Menu 🏠</button>
+    </div>
+   </main>
+   <footer class="relative z-10 text-center py-4 bg-gradient-to-r from-orange-300/30 to-pink-300/30 border-t-2 border-orange-400 w-full">
+    <p class="text-gray-700 font-semibold text-sm">© 2024 Copyright by <span class="text-orange-600 font-bold">bapak_majid_APD</span> | Aku Cinta Bangun Datar</p>
+   </footer>
+  </div>
+  <script>
+    // Global variables
+    let studentName = '';
+    let currentMode = '';
+    let currentIdx = 0;
+    let score = 0;
+    let answered = false;
+    let audioEnabled = true;
+
+    // Quiz questions
+    const kuisQuestions = [
+      { q: "Bangun apa yang mirip dengan pintu rumah?", opts: ["Persegi Panjang", "Persegi", "Lingkaran", "Segitiga"], ans: 0, img: "📚" },
+      { q: "Bangun apa yang memiliki 3 sisi?", opts: ["Persegi", "Segitiga", "Lingkaran", "Trapesium"], ans: 1, img: "🔺" },
+      { q: "Roda kendaraan berbentuk apa?", opts: ["Persegi", "Segitiga", "Lingkaran", "Persegi Panjang"], ans: 2, img: "🚗" },
+      { q: "Papan catur berbentuk apa?", opts: ["Persegi Panjang", "Segitiga", "Lingkaran", "Trapesium"], ans: 0, img: "♟️" },
+      { q: "Atap rumah berbentuk apa?", opts: ["Persegi", "Lingkaran", "Segitiga", "Trapesium"], ans: 2, img: "🏠" },
+      { q: "Pizza potongan satu potong berbentuk apa?", opts: ["Persegi Panjang", "Segitiga", "Lingkaran", "Persegi"], ans: 1, img: "🍕" }
+    ];
+
+    const postestQuestions = [
+      { q: "Berapa banyak sisi yang dimiliki persegi?", opts: ["3", "4", "5", "6"], ans: 1, img: "⬜" },
+      { q: "Jam dinding berbentuk apa?", opts: ["Persegi", "Segitiga", "Lingkaran", "Trapesium"], ans: 2, img: "🕐" },
+      { q: "Bangun yang semua sudutnya 90° adalah?", opts: ["Segitiga", "Persegi Panjang", "Lingkaran", "Trapesium"], ans: 1, img: "📦" },
+      { q: "Bola memiliki bentuk apa?", opts: ["Persegi", "Segitiga", "Lingkaran", "Trapesium"], ans: 2, img: "⚽" },
+      { q: "Berapa jumlah sudut segitiga?", opts: ["2", "3", "4", "5"], ans: 1, img: "🔺" },
+      { q: "Tas sekolah mu berbentuk apa?", opts: ["Persegi", "Persegi Panjang", "Lingkaran", "Segitiga"], ans: 1, img: "👜" },
+      { q: "Ubin lantai rumah biasanya berbentuk apa?", opts: ["Segitiga", "Lingkaran", "Persegi", "Trapesium"], ans: 2, img: "🏠" },
+      { q: "Bangun dengan dua sisi sejajar adalah?", opts: ["Persegi", "Trapesium", "Lingkaran", "Segitiga"], ans: 1, img: "📐" }
+    ];
+
+    // Start game
+    function startGame() {
+      const nameInput = document.getElementById('student-name');
+      const name = nameInput.value.trim();
+      
+      if (!name) {
+        return;
+      }
+      
+      studentName = name;
+      hideAllScreens();
+      document.getElementById('screen-menu').classList.remove('hidden');
+    }
+
+    // Toggle audio
+    function toggleAudio() {
+      const audio = document.getElementById('bg-music');
+      const btn = document.getElementById('audio-toggle');
+      audioEnabled = !audioEnabled;
+      
+      if (audioEnabled) {
+        audio.play().catch(() => {});
+        btn.textContent = '🔊';
+      } else {
+        audio.pause();
+        btn.textContent = '🔇';
+      }
+    }
+
+    // Hide all screens
+    function hideAllScreens() {
+      document.querySelectorAll('[id^="screen-"]').forEach(e => e.classList.add('hidden'));
+    }
+
+    // Navigate to menu
+    function goToMenu(mode) {
+      hideAllScreens();
+      
+      if (mode === 'menu') {
+        document.getElementById('screen-menu').classList.remove('hidden');
+      } else if (mode === 'materi') {
+        document.getElementById('screen-materi').classList.remove('hidden');
+      } else if (mode === 'kuis') {
+        currentMode = 'kuis';
+        currentIdx = 0;
+        score = 0;
+        answered = false;
+        document.getElementById('screen-kuis').classList.remove('hidden');
+        renderKuis();
+      } else if (mode === 'postest') {
+        currentMode = 'postest';
+        currentIdx = 0;
+        score = 0;
+        answered = false;
+        document.getElementById('screen-postest').classList.remove('hidden');
+        renderPostest();
+      }
+    }
+
+    // Render kuis question
+    function renderKuis() {
+      answered = false;
+      const q = kuisQuestions[currentIdx];
+      document.getElementById('kuis-number').textContent = `Soal ${currentIdx + 1} / ${kuisQuestions.length}`;
+      document.getElementById('kuis-question').textContent = q.q;
+      document.getElementById('kuis-image').textContent = q.img;
+      document.getElementById('kuis-feedback').classList.add('hidden');
+      document.getElementById('kuis-next').classList.add('hidden');
+
+      const container = document.getElementById('kuis-options');
+      container.innerHTML = '';
+      q.opts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-hover w-full text-left bg-gradient-to-r from-blue-100 to-blue-50 border-3 border-blue-400 text-gray-800 font-bold text-lg px-6 py-4 rounded-2xl hover:from-blue-200 hover:to-blue-100';
+        btn.textContent = `${String.fromCharCode(65 + i)}. ${opt}`;
+        btn.onclick = () => pickKuisAnswer(i, btn);
+        container.appendChild(btn);
+      });
+
+      renderStars('kuis');
+    }
+
+    // Render postest question
+    function renderPostest() {
+      answered = false;
+      const q = postestQuestions[currentIdx];
+      document.getElementById('postest-number').textContent = `Soal ${currentIdx + 1} / ${postestQuestions.length}`;
+      document.getElementById('postest-question').textContent = q.q;
+      document.getElementById('postest-image').textContent = q.img;
+      document.getElementById('postest-feedback').classList.add('hidden');
+      document.getElementById('postest-next').classList.add('hidden');
+
+      const container = document.getElementById('postest-options');
+      container.innerHTML = '';
+      q.opts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-hover w-full text-left bg-gradient-to-r from-purple-100 to-purple-50 border-3 border-purple-400 text-gray-800 font-bold text-lg px-6 py-4 rounded-2xl hover:from-purple-200 hover:to-purple-100';
+        btn.textContent = `${String.fromCharCode(65 + i)}. ${opt}`;
+        btn.onclick = () => pickPostestAnswer(i, btn);
+        container.appendChild(btn);
+      });
+
+      renderStars('postest');
+    }
+
+    // Render stars
+    function renderStars(type) {
+      const container = document.getElementById(type === 'kuis' ? 'kuis-stars' : 'postest-stars');
+      const maxQuestions = type === 'kuis' ? kuisQuestions.length : postestQuestions.length;
+      container.innerHTML = '';
+      for (let i = 0; i < maxQuestions; i++) {
+        const span = document.createElement('span');
+        span.textContent = i < score ? '⭐' : '☆';
+        span.className = i < score ? 'text-2xl' : 'text-2xl text-gray-300';
+        container.appendChild(span);
+      }
+    }
+
+    // Pick kuis answer
+    function pickKuisAnswer(idx, btn) {
+      if (answered) return;
+      answered = true;
+      const correct = idx === kuisQuestions[currentIdx].ans;
+      const fb = document.getElementById('kuis-feedback');
+      const opts = document.querySelectorAll('#kuis-options button');
+
+      opts.forEach((b, i) => {
+        b.disabled = true;
+        if (i === kuisQuestions[currentIdx].ans) {
+          b.classList.remove('from-blue-100', 'to-blue-50', 'border-blue-400');
+          b.classList.add('from-green-300', 'to-green-200', 'border-green-500', 'anim-pop');
+        }
+      });
+
+      if (correct) {
+        score++;
+        renderStars('kuis');
+        fb.textContent = '✅ Benar! Keren banget! 🎉';
+        fb.className = 'bg-green-200 border-4 border-green-500 text-green-700 rounded-2xl p-4 font-bold text-lg';
+      } else {
+        btn.classList.remove('from-blue-100', 'to-blue-50', 'border-blue-400');
+        btn.classList.add('from-red-300', 'to-red-200', 'border-red-500', 'anim-shake');
+        fb.textContent = '❌ Belum tepat. Lihat jawaban yang benar ya!';
+        fb.className = 'bg-red-200 border-4 border-red-500 text-red-700 rounded-2xl p-4 font-bold text-lg';
+      }
+      fb.classList.remove('hidden');
+      document.getElementById('kuis-next').classList.remove('hidden');
+    }
+
+    // Pick postest answer
+    function pickPostestAnswer(idx, btn) {
+      if (answered) return;
+      answered = true;
+      const correct = idx === postestQuestions[currentIdx].ans;
+      const fb = document.getElementById('postest-feedback');
+      const opts = document.querySelectorAll('#postest-options button');
+
+      opts.forEach((b, i) => {
+        b.disabled = true;
+        if (i === postestQuestions[currentIdx].ans) {
+          b.classList.remove('from-purple-100', 'to-purple-50', 'border-purple-400');
+          b.classList.add('from-green-300', 'to-green-200', 'border-green-500', 'anim-pop');
+        }
+      });
+
+      if (correct) {
+        score++;
+        renderStars('postest');
+        fb.textContent = '✅ Benar! Luar biasa! 🌟';
+        fb.className = 'bg-green-200 border-4 border-green-500 text-green-700 rounded-2xl p-4 font-bold text-lg';
+      } else {
+        btn.classList.remove('from-purple-100', 'to-purple-50', 'border-purple-400');
+        btn.classList.add('from-red-300', 'to-red-200', 'border-red-500', 'anim-shake');
+        fb.textContent = '❌ Belum tepat. Perhatikan jawaban yang benar!';
+        fb.className = 'bg-red-200 border-4 border-red-500 text-red-700 rounded-2xl p-4 font-bold text-lg';
+      }
+      fb.classList.remove('hidden');
+      document.getElementById('postest-next').classList.remove('hidden');
+    }
+
+    // Next kuis
+    function nextKuis() {
+      currentIdx++;
+      if (currentIdx >= kuisQuestions.length) showResult('kuis');
+      else renderKuis();
+    }
+
+    // Next postest
+    function nextPostest() {
+      currentIdx++;
+      if (currentIdx >= postestQuestions.length) showResult('postest');
+      else renderPostest();
+    }
+
+    // Show result
+    function showResult(type) {
+      hideAllScreens();
+      document.getElementById('screen-result').classList.remove('hidden');
+
+      const total = type === 'kuis' ? kuisQuestions.length : postestQuestions.length;
+      const pct = score / total;
+      document.getElementById('result-score').textContent = `Skor: ${score} dari ${total}`;
+
+      const rs = document.getElementById('result-stars');
+      rs.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const s = document.createElement('span');
+        s.textContent = i < score ? '⭐' : '☆';
+        s.className = 'text-3xl anim-pop';
+        s.style.animationDelay = (i * 0.1) + 's';
+        rs.appendChild(s);
+      }
+
+      const emoji = document.getElementById('result-emoji');
+      const msg = document.getElementById('result-msg');
+      if (pct === 1) {
+        emoji.textContent = '🏆';
+        msg.textContent = 'Sempurna! Kamu sudah mahir bangun datar! Lanjutkan belajar ya! 🚀';
+      } else if (pct >= 0.75) {
+        emoji.textContent = '🌟';
+        msg.textContent = 'Sangat bagus! Kamu sudah memahami bangun datar dengan baik! 👏';
+      } else if (pct >= 0.5) {
+        emoji.textContent = '😊';
+        msg.textContent = 'Bagus! Terus belajar dan praktikkan lagi ya! 💪';
+      } else {
+        emoji.textContent = '📚';
+        msg.textContent = 'Jangan menyerah! Pelajari materi lagi dan coba lagi nanti! Semangat! 🎯';
+      }
+    }
+
+    // Element SDK
+    const defaultConfig = {
+      app_title: 'Aku Cinta Bangun Datar'
+    };
+
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => {
+        const title = config.app_title || defaultConfig.app_title;
+        document.getElementById('app-title').textContent = '🟊 ' + title;
+      },
+      mapToCapabilities: (config) => ({
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['app_title', config.app_title || defaultConfig.app_title]
+      ])
+    });
+
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e66ca875164b581',t:'MTc3NTIwNTg2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
